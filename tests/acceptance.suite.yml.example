@@ -1,0 +1,11 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://testserver:8080/
+            host: selnium
+            browser: chrome
+        - Yii2:
+            part: orm
+            entryScript: index.php
+            cleanup: false
