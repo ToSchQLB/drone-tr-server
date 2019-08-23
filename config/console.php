@@ -26,15 +26,33 @@ $config = [
             ],
         ],
         'db' => $db,
-    ],
-    'params' => $params,
-    /*
-    'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
+        'authManager' => [
+            'class' => yii\rbac\DbManager::class,
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
         ],
     ],
-    */
+    'params' => $params,
+    'controllerMap' => [
+        'migrate' => [
+            'class' => \yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@yii/rbac/migrations', // Just in case you forgot to run it on console (see next note)
+            ],
+            'migrationNamespaces' => [
+                'Da\User\Migration',
+            ],
+        ],
+    ],
+    'modules' => [
+        'user' =>  Da\User\Module::class,
+    ]
 ];
 
 if (YII_ENV_DEV) {

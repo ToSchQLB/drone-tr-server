@@ -1,7 +1,10 @@
 <?php
 
+use Da\User\Module;
+use yii\rbac\DbManager;
+
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$db     = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
@@ -18,10 +21,6 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -43,16 +42,29 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+        'authManager' => [
+            'class' => yii\rbac\DbManager::class,
+        ]
     ],
     'params' => $params,
+    'controllerMap' => [
+        'migrate' => [
+            'class' => \yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@yii/rbac/migrations', // Just in case you forgot to run it on console (see next note)
+            ],
+            'migrationNamespaces' => [
+                'Da\User\Migration',
+            ],
+        ],
+    ],
+    'modules' => [
+        'user' => [
+            'class' => Da\User\Module::class,
+            'administratorPermissionName' => 'Admin'
+        ]
+    ]
 ];
 
 if (YII_ENV_DEV) {
