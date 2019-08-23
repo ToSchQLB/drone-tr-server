@@ -51,18 +51,18 @@ steps:
         - success
         - failure
 
-  - name: process-results
-    image: php:7-fpm
-    volumes:
-      - name: webdata
-        path: /drone/src
-    failure: ignore
-    commands:
-      - php yii test/test
-    when:
-      status:
-        - success
-        - failure
+#  - name: process-results
+#    image: php:7-fpm
+#    volumes:
+#      - name: webdata
+#        path: /drone/src
+#    failure: ignore
+#    commands:
+#      - php yii test/test
+#    when:
+#      status:
+#        - success
+#        - failure
 
 services:
   - name: mysql_db
