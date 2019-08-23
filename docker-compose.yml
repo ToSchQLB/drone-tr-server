@@ -7,14 +7,40 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: letter-safe
-      MYSQL_USER: letter-safe
-      MYSQL_PASSWORD: letter-safe
+      MYSQL_DATABASE: drone-tr-server
+      MYSQL_USER: drone-tr-server
+      MYSQL_PASSWORD: drone-tr-server
 
   php:
     build: .
     ports:
       - '8000:80'
+    depends_on:
+      - db
+    volumes:
+      - data_php:/var/www/html
+    environment:
+      DB_SERVER: db
+      DB_DB: drone-tr-server
+      DB_USER: drone-tr-server
+      DB_PASSWORD: drone-tr-server
+
+  migrate:
+    image: toschqlb/php-test-server
+    volumes:
+      - data_php:/var/www/html
+    depends_on:
+      - db
+      - php
+    environment:
+      DB_SERVER: db
+      DB_DB: drone-tr-server
+      DB_USER: drone-tr-server
+      DB_PASSWORD: drone-tr-server
+    command: sleep 20 \
+      && php yii migrate --interactive=0
+
 
 volumes:
   data_db:
+  data_php:
