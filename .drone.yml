@@ -5,38 +5,39 @@ steps:
   - name: install-composer
     image: composer
     volumes:
-    - name: webdata
-      path: /drone/src
+      - name: webdata
+        path: /drone/src
     commands:
       - composer install --dev
 
-  - name: run-test
-    image: php:7-fpm
+  - name: configure-app
+    image: toschqlb/php-test-server
+    volumes:
+      - name: webdata
+        path: /drone/src
+    commands:
+      - echo "<?php return ['class' => 'yii\db\Connection','dsn' => 'mysql:host=mysql_db;dbname=test_db','username' => 'test_user','password' => 'test_pass','charset' => 'utf8']; ?>" > config/db.php
+      - echo "<?php return ['class' => 'yii\db\Connection','dsn' => 'mysql:host=mysql_db;dbname=test_db','username' => 'test_user','password' => 'test_pass','charset' => 'utf8']; ?>" > config/test_db.php
+
+  - name: yii-migrate
+    image: toschqlb/php-test-server
     failure: ignore
     volumes:
-    - name: webdata
-      path: /drone/src
+      - name: webdata
+        path: /drone/src
     commands:
-      - apt-get update -y && apt-get install -y libpng-dev libmagickwand-dev && pecl install imagick && docker-php-ext-enable imagick
-      - docker-php-ext-install pdo pdo_mysql gd
-      - echo "<?php return ['class' => 'yii\db\Connection','dsn' => 'mysql:host=mysql_db;dbname=test_db','username' => 'test_user','password' => 'test_pass','charset' => 'utf8']; ?>" > config/db.php
       - php yii migrate --interactive=0
-      - vendor/bin/codecept run --xml --html --json --report
-      - php yii test/test
 
+  - name: run-test
+    image: toschqlb/php-test-server
+    volumes:
+      - name: webdata
+        path: /drone/src
+    commands:
+      - vendor/bin/codecept run --xml --html --json
 
-#  - name: test-test
-#    image: php:7-fpm
-#    volumes:
-#      - name: webdata
-#        path: /drone/src
-#    failure: ignore
-#    commands:
-#      - php yii test/test
-
-  - name: ftpupload
+  - name: upload-result
     image: cschlosser/drone-ftps
-    source_dir: /drone/src/tests/_output/
     environment:
       FTP_USERNAME:
         from_secret: ftp_username
@@ -45,8 +46,24 @@ steps:
       PLUGIN_HOSTNAME:
         from_secret: ftp_host
       PLUGIN_SRC_DIR: '/tests/_output/'
+    when:
+      status:
+        - success
+        - failure
 
-    
+  - name: process-results
+    image: php:7-fpm
+    volumes:
+      - name: webdata
+        path: /drone/src
+    failure: ignore
+    commands:
+      - php yii test/test
+    when:
+      status:
+        - success
+        - failure
+
 services:
   - name: mysql_db
     image: mysql:5
@@ -60,14 +77,12 @@ services:
     image: selenium/standalone-chrome
 
   - name: testserver
-    image: php:7-fpm
+    image: toschqlb/php-test-server
     ports:
       - 80
       - 8080
     volumes:
-    - name: webdata
-      path: /drone/src
+      - name: webdata
+        path: /drone/src
     commands:
-      - apt-get update -y && apt-get install -y libpng-dev libmagickwand-dev && pecl install imagick && docker-php-ext-enable imagick
-      - docker-php-ext-install pdo pdo_mysql gd
       - php -S testserver:8080 -t ./web
