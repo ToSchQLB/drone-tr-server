@@ -8,26 +8,20 @@ class ProjectTest extends \Codeception\Test\Unit
 {
     private $projekt_id;
 
-    public function testBeforeSave()
+    public function testImportFolderFunctions()
     {
-        $projet = new Project(['name' => 'test-123']);
-        $projet->save(false);
+        $project = new Project(['name' => 'test-123']);
+        $project->save(false);
 
-        $this->projekt_id = $projet->id;
+        $this->projekt_id = $project->id;
 
-        expect_not(empty($projet->token));
-        expect_that(file_exist(\Yii::getAlias('@web/import/'.$projet->token)));
-    }
+        expect_not(empty($project->token));
+        expect_that(file_exists(\Yii::getAlias('@web/import/'.$project->token)));
 
-    public function testBeforeDelete()
-    {
-        $projet = Project::findOne($this->projekt_id);
-        $token = $projet->token;
+        $token = $project->token;
 
-        expect_that(file_exist(\Yii::getAlias('@web/import/'.$token)));
-        expect($projet)->isInstanceOf(Project::class);
-        $projet->delete();
+        $project->delete();
 
-        not(file_exist(\Yii::getAlias('@web/import/'.$token)));
+        expect_not(file_exists (\Yii::getAlias('@web/import/'.$token)));
     }
 }
