@@ -26,12 +26,13 @@ RUN apt-get update -y && \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
     && cd /var/www/html \
+    && chmod 0777 entrypoint.sh \
     && rm web/.htaccess \
     && chmod 777 /var/www/html/web/assets \
     && echo "<?php return ['class' => 'yii\db\Connection','dsn' => 'mysql:host='.getenv('DB_SERVER').';dbname='.getenv('DB_DB'),'username' => getenv('DB_USER'),'password' => getenv('DB_PASSWORD'),'charset' => 'utf8']; ?>" > config/db.php \
     && wget https://getcomposer.org/composer.phar \
     && php composer.phar install
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/var/www/html/entrypoint.sh"]
 
 EXPOSE 80/tcp
