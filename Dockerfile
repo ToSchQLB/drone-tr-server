@@ -1,7 +1,9 @@
 FROM php:7-apache
 
 COPY ./docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./docker/entrypoint.sh /var/www/html/entrypoint.sh
 COPY . /var/www/html
+
 
 ENV DB_SERVER db-server
 ENV DB_DB db
@@ -30,3 +32,6 @@ RUN apt-get update -y && \
     && wget https://getcomposer.org/composer.phar \
     && php composer.phar install
 
+ENTRYPOINT ["./entrypoint.sh"]
+
+EXPOSE 80/tcp
