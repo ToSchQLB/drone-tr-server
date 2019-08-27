@@ -20,8 +20,19 @@ class ProjectTest extends \Codeception\Test\Unit
 
         $token = $project->token;
 
+//        expect_that('New Build creates Folder');
+
+        $build = $project->createNewBuild();
+
+        expect_that(
+            file_exists (\Yii::getAlias('@web/import/'.$token.'/'.$build->id))
+        );
+
         $project->delete();
 
         expect_not(file_exists (\Yii::getAlias('@web/import/'.$token)));
+
     }
+
+
 }

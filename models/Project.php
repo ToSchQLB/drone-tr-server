@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Symfony\Component\Yaml\Tests\B;
 use Yii;
 use yii\helpers\FileHelper;
 
@@ -11,6 +12,8 @@ use yii\helpers\FileHelper;
  * @property int $id
  * @property string $name
  * @property string $token
+ *
+ * @property Build[] builds
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -60,6 +63,24 @@ class Project extends \yii\db\ActiveRecord
     {
         FileHelper::removeDirectory(Yii::getAlias('@web/import/'.$this->token));
         return parent::beforeDelete();
+    }
+
+    public function createNewBuild()
+    {
+        $build = new Build();
+        $build->project_id = $this->id;
+        $build->save(false);
+
+        FileHelper::createDirectory(Yii::getAlias('@web/import/'.$this->token.'/'.$build->id));
+
+        return $build;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBuilds(){
+        return $this->hasMany(Build::className(), ['project_id' => 'id']);
     }
 
 

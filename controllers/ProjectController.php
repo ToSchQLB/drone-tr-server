@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Faker\Provider\File;
 use Yii;
 use app\models\Project;
 use app\models\ProjectSearch;
@@ -107,6 +108,16 @@ class ProjectController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionProcessBuild($token){
+        $project = Project::findOne(['token' => $token]);
+        if(is_null($project)){
+            throw new NotFoundHttpException();
+        }
+
+        $build = $project->createNewBuild();
+
     }
 
     /**
