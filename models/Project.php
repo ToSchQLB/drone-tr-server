@@ -39,9 +39,9 @@ class Project extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'token' => Yii::t('app', 'Token'),
+            'id' => Yii::t('project', 'ID'),
+            'name' => Yii::t('project', 'Name'),
+            'token' => Yii::t('project', 'Token'),
         ];
     }
 

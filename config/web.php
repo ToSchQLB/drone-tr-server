@@ -14,7 +14,16 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'de-DE',
+    'sourceLanguage' => 'en-US',
     'components' => [
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => \yii\i18n\PhpMessageSource::className(),
+                ]
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'bqjVhKxGkNUMD-dkdv7o_f5cZTmwHaR_',
