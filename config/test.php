@@ -12,8 +12,16 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'language' => 'en-US',
+    'language' => 'de-DE',
+    'sourceLanguage' => 'en-US',
     'components' => [
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => \yii\i18n\PhpMessageSource::className(),
+                ]
+            ],
+        ],
         'db' => $db,
         'mailer' => [
             'useFileTransport' => true,
