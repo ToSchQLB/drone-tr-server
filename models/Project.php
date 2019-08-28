@@ -53,15 +53,24 @@ class Project extends \yii\db\ActiveRecord
     {
         if($insert){
             $this->token = uniqid('') . uniqid('');
-            FileHelper::createDirectory(Yii::getAlias('@web/import/'.$this->token));
-
         }
         return parent::beforeSave($insert);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($insert){
+            FileHelper::createDirectory('./import/'.$this->token);
+            FileHelper::createDirectory('./pd/'.$this->token);
+
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+
     public function beforeDelete()
     {
-        FileHelper::removeDirectory(Yii::getAlias('@web/import/'.$this->token));
+        FileHelper::removeDirectory('./import/'.$this->token);
         return parent::beforeDelete();
     }
 
@@ -70,8 +79,6 @@ class Project extends \yii\db\ActiveRecord
         $build = new Build();
         $build->project_id = $this->id;
         $build->save(false);
-
-        FileHelper::createDirectory(Yii::getAlias('@web/import/'.$this->token.'/'.$build->id));
 
         return $build;
     }
