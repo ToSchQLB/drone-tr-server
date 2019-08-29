@@ -4,6 +4,7 @@ namespace app\models;
 
 use Symfony\Component\Yaml\Tests\B;
 use Yii;
+use yii\db\Expression;
 use yii\helpers\FileHelper;
 
 /**
@@ -14,6 +15,7 @@ use yii\helpers\FileHelper;
  * @property string $token
  *
  * @property Build[] builds
+ * @property Build lastBuild                        
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -46,6 +48,7 @@ class Project extends \yii\db\ActiveRecord
             'id' => Yii::t('project', 'ID'),
             'name' => Yii::t('project', 'Name'),
             'token' => Yii::t('project', 'Token'),
+            'lastBuild.date' => Yii::t('project', 'last Build'),
         ];
     }
 
@@ -78,6 +81,7 @@ class Project extends \yii\db\ActiveRecord
     {
         $build = new Build();
         $build->project_id = $this->id;
+        $build->date = new Expression('now()');
         $build->save(false);
 
         return $build;
@@ -88,6 +92,11 @@ class Project extends \yii\db\ActiveRecord
      */
     public function getBuilds(){
         return $this->hasMany(Build::className(), ['project_id' => 'id']);
+    }
+    
+    public function getLastBuild(){
+        return $this->hasOne(Build::className(), ['project_id' => 'id'])
+            ->onCondition(['id'=>Build::find()->where(['project_id' => $this->id])->max('id')]);
     }
 
 

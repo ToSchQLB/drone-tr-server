@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+use yii\data\ArrayDataProvider;
+use yii\grid\GridView;use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -33,6 +34,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'token',
         ],
+    ]) ?>
+
+    <h2><?= Yii::t('project', 'last builds') ?></h2>
+
+    <?= GridView::widget([
+            'dataProvider' => new ArrayDataProvider(['allModels' => $model->builds]),
+            'columns' => [
+                    'id:text:BUILD',
+                    'date:date',
+                    [
+                        'attribute' => 'success',
+                        'value' => function ($model){return $model->success == 1 ? 'yes' : 'no';}
+                    ]
+            ]
     ]) ?>
 
 </div>

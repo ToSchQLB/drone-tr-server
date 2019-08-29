@@ -6,6 +6,7 @@ use Faker\Provider\File;
 use Yii;
 use app\models\Project;
 use app\models\ProjectSearch;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -115,12 +116,29 @@ class ProjectController extends Controller
         if(is_null($project)){
             throw new NotFoundHttpException();
         }
-
         $build = $project->createNewBuild();
+        FileHelper::copyDirectory(
+            '.'. DIRECTORY_SEPARATOR .'import' . DIRECTORY_SEPARATOR . $project->token,
+            $build->buildFolder
+        );
+        
+        $data = simplexml_load_file($build->buildFolder . DIRECTORY_SEPARATOR . 'report.xml');
+        echo '<pre>';
 
+        $assertion = $pos = $neg = 0;
+        foreach ($data->testsuite as $testsuite) {
+            $attributes = $testsuite->attributes();
+            $assertion += $attributes['assertions'];
+            $neg += $attributes['errors'];
+            $neg += $attributes['failures'];
+        }
 
+        $build->success = $neg == 0 ? 1 : 0;
+        $build->assertion = $assertion;
+        $build->positiv = $pos;
+        $build->negativ = $neg;
 
-
+        $build->save();
     }
 
     /**
@@ -138,4 +156,6 @@ class ProjectController extends Controller
 
         throw new NotFoundHttpException(Yii::t('project', 'The requested page does not exist.'));
     }
+
+    
 }

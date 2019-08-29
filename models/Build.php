@@ -69,7 +69,7 @@ class Build extends \yii\db\ActiveRecord
     public function getBuildFolder()
     {
         return '.'
-            . DIRECTORY_SEPARATOR . 'import'
+            . DIRECTORY_SEPARATOR . 'pd'
             . DIRECTORY_SEPARATOR . $this->project->token
             . DIRECTORY_SEPARATOR . $this->id;
     }
