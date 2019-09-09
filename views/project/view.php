@@ -45,6 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'build_no',
                 'format'    => 'raw',
+                'value'     => function ($model) {
+                    /** @var \app\models\Build $model */
+                    return Html::a($model->build_no,['build/view', 'id' => $model->id], ['target' => '_blank']);
+                },
             ],
             'date:date',
             [
