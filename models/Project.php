@@ -13,6 +13,7 @@ use yii\helpers\FileHelper;
  * @property int $id
  * @property string $name
  * @property string $token
+ * @property int $build_cnt
  *
  * @property Build[] builds
  * @property Build lastBuild                        
@@ -36,6 +37,7 @@ class Project extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['name'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 50],
+            [['build_cnt'], 'integer'],
         ];
     }
 
@@ -48,6 +50,7 @@ class Project extends \yii\db\ActiveRecord
             'id' => Yii::t('project', 'ID'),
             'name' => Yii::t('project', 'Name'),
             'token' => Yii::t('project', 'Token'),
+            'build_cnt' => Yii::t('project', 'Build Count'),
             'lastBuild.date' => Yii::t('project', 'last Build'),
         ];
     }
@@ -82,7 +85,11 @@ class Project extends \yii\db\ActiveRecord
         $build = new Build();
         $build->project_id = $this->id;
         $build->date = new Expression('now()');
+        $build->build_no = $this->build_cnt +1;
         $build->save(false);
+
+        $this->build_cnt = $build->build_no;
+        $this->save(false);
 
         return $build;
     }

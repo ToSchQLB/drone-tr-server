@@ -33,12 +33,15 @@ class BuildTest extends \Codeception\Test\Unit
     {
         $project = $this->getProjects()['Project Test'];
         $project = Project::findOne($project['id']);
+        $old_build_cnt = $project->build_cnt;
         Debug::debug($project);
         $build = $project->createNewBuild();
 
         expect($build)->isInstanceOf(Build::className());
         expect_not(empty($build->buildFolder));
         expect_that(file_exists(\Yii::getAlias($build->buildFolder)));
+        expect($project->build_cnt)->equals($old_build_cnt + 1);
+        expect($build->build_no)->equals($old_build_cnt + 1);
     }
 
     private function getProjects()

@@ -10,6 +10,7 @@ use yii\helpers\FileHelper;
  *
  * @property int $id
  * @property int $project_id
+ * @property int $build_no
  * @property int $success
  * @property int $assertion
  * @property int $positiv
@@ -35,7 +36,7 @@ class Build extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['project_id', 'success', 'assertion', 'positiv', 'negativ'], 'integer'],
+            [['project_id', 'build_no', 'success', 'assertion', 'positiv', 'negativ'], 'integer'],
             [['date'], 'safe'],
             [['project_id'], 'required'],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']],
@@ -50,6 +51,7 @@ class Build extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('build', 'ID'),
             'project_id' => Yii::t('build', 'Project ID'),
+            'build_no' => Yii::t('build', 'Build Number'),
             'success' => Yii::t('build', 'Success'),
             'assertion' => Yii::t('build', 'Assertion'),
             'positiv' => Yii::t('build', 'Positiv'),
