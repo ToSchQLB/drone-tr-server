@@ -52,19 +52,19 @@ steps:
         - failure
 
   - name: upload-assets
-      image: cschlosser/drone-ftps
-      environment:
-        FTP_USERNAME:
-          from_secret: ftp_username
-        FTP_PASSWORD:
-          from_secret: ftp_passwort
-        PLUGIN_HOSTNAME:
-          from_secret: ftp_host
-        PLUGIN_SRC_DIR: '/web/assets/'
-      when:
-        status:
-          - success
-          - failure
+    image: cschlosser/drone-ftps
+    environment:
+      FTP_USERNAME:
+        from_secret: ftp_username
+      FTP_PASSWORD:
+        from_secret: ftp_passwort
+      PLUGIN_HOSTNAME:
+        from_secret: ftp_host
+      PLUGIN_SRC_DIR: '/web/assets/'
+    when:
+      status:
+        - success
+        - failure
 
 #  - name: process-results
 #    image: php:7-fpm
