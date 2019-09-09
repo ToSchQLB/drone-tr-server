@@ -16,7 +16,7 @@ class ProjectTest extends \Codeception\Test\Unit
         $this->projekt_id = $project->id;
 
         expect_not(empty($project->token));
-        expect(file_exists(\Yii::getAlias('@web/import/'.$project->token)))->bool('true');
+        expect(file_exists(\Yii::getAlias('@web/import/' . $project->token)))->bool('true');
 
         $token = $project->token;
 
@@ -25,12 +25,12 @@ class ProjectTest extends \Codeception\Test\Unit
         $build = $project->createNewBuild();
 
         expect(
-            file_exists (\Yii::getAlias('@web/import/'.$token.'/'.$build->id))
+            file_exists(\Yii::getAlias('@web/import/' . $token . '/' . $build->id))
         )->bool(true);
 
         $project->delete();
 
-        expect_not(file_exists (\Yii::getAlias('@web/import/'.$token)));
+        expect_not(file_exists(\Yii::getAlias('@web/import/' . $token)));
 
     }
 

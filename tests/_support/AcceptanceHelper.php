@@ -12,8 +12,8 @@ class AcceptanceHelper
 {
     public static function login($I, $nutzer = 'test.admin')
     {
-        $users = require codecept_data_dir().'login.php';
-        $user = $users[$nutzer];
+        $users = require codecept_data_dir() . 'login.php';
+        $user  = $users[$nutzer];
 
         $I->amOnPage(Url::toRoute('/user/security/login'));
         $I->maximizeWindow();
@@ -28,27 +28,28 @@ class AcceptanceHelper
     }
 
     /**
-     * @param $I AcceptanceTester
-     * @param $model \yii\db\ActiveRecord
+     * @param $I      AcceptanceTester
+     * @param $model  \yii\db\ActiveRecord
      * @param $values array
      */
-    public static function fillForm($I, $model, $values){
+    public static function fillForm($I, $model, $values)
+    {
 
         foreach ($values as $key => $value) {
-            $I->fillField('#' . strtolower($model->formName() . '-' . $key) ,$value);
+            $I->fillField('#' . strtolower($model->formName() . '-' . $key), $value);
         }
     }
 
 
     /**
-     * @param $I AcceptanceTester
-     * @param $model \yii\db\ActiveRecord
+     * @param $I      AcceptanceTester
+     * @param $model  \yii\db\ActiveRecord
      * @param $fields array
      */
     public static function checkEmptyFields($I, $model, $fields)
     {
         foreach ($fields as $field) {
-            $I->see($model->getAttributeLabel($field).' darf nicht leer sein');
+            $I->see($model->getAttributeLabel($field) . ' darf nicht leer sein');
         }
     }
 
@@ -56,8 +57,8 @@ class AcceptanceHelper
      * Fill out select2 option field
      *
      * @param \Codeception\Actor $I
-     * @param string $selector
-     * @param string $value
+     * @param string             $selector
+     * @param string             $value
      *
      * @return void
      */

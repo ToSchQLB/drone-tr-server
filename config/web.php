@@ -1,65 +1,62 @@
 <?php
 
-use Da\User\Module;
-use yii\rbac\DbManager;
-
 $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'aliases' => [
+    'id'             => 'basic',
+    'basePath'       => dirname(__DIR__),
+    'bootstrap'      => ['log'],
+    'aliases'        => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'language' => 'de-DE',
+    'language'       => 'de-DE',
     'sourceLanguage' => 'en-US',
-    'components' => [
-        'i18n' => [
+    'components'     => [
+        'i18n'         => [
             'translations' => [
                 '*' => [
                     'class' => \yii\i18n\PhpMessageSource::className(),
-                ]
+                ],
             ],
         ],
-        'request' => [
+        'request'      => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'bqjVhKxGkNUMD-dkdv7o_f5cZTmwHaR_',
         ],
-        'cache' => [
+        'cache'        => [
             'class' => 'yii\caching\FileCache',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+        'mailer'       => [
+            'class'            => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
-        'log' => [
+        'log'          => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
+            'targets'    => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class'  => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
             ],
         ],
-        'db' => $db,
-        'authManager' => [
+        'db'           => $db,
+        'authManager'  => [
             'class' => yii\rbac\DbManager::class,
-        ]
+        ],
     ],
-    'params' => $params,
-    'controllerMap' => [
+    'params'         => $params,
+    'controllerMap'  => [
         'migrate' => [
-            'class' => \yii\console\controllers\MigrateController::class,
-            'migrationPath' => [
+            'class'               => \yii\console\controllers\MigrateController::class,
+            'migrationPath'       => [
                 '@app/migrations',
                 '@yii/rbac/migrations', // Just in case you forgot to run it on console (see next note)
             ],
@@ -68,24 +65,24 @@ $config = [
             ],
         ],
     ],
-    'modules' => [
+    'modules'        => [
         'user' => [
-            'class' => Da\User\Module::class,
-            'administratorPermissionName' => 'Admin'
-        ]
-    ]
+            'class'                       => Da\User\Module::class,
+            'administratorPermissionName' => 'Admin',
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
+    $config['bootstrap'][]      = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
-    $config['bootstrap'][] = 'gii';
+    $config['bootstrap'][]    = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.

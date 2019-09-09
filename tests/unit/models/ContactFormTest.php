@@ -7,11 +7,11 @@ use yii\mail\MessageInterface;
 
 class ContactFormTest extends \Codeception\Test\Unit
 {
-    private $model;
     /**
      * @var \UnitTester
      */
     public $tester;
+    private $model;
 
     public function testEmailIsSentOnContact()
     {
@@ -25,10 +25,10 @@ class ContactFormTest extends \Codeception\Test\Unit
             ->willReturn(true);
 
         $this->model->attributes = [
-            'name' => 'Tester',
-            'email' => 'tester@example.com',
+            'name'    => 'Tester',
+            'email'   => 'tester@example.com',
             'subject' => 'very important letter subject',
-            'body' => 'body of current message',
+            'body'    => 'body of current message',
         ];
 
         expect_that($this->model->contact('admin@example.com'));

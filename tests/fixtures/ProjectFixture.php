@@ -4,13 +4,12 @@
 namespace app\tests\fixtures;
 
 
-use app\models\Project;
 use yii\test\ActiveFixture;
 
 class ProjectFixture extends ActiveFixture
 {
     public $tableName = 'project';
-    public $db = 'db';
+    public $db        = 'db';
 
     public function getData()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class ContactFormCest 
+class ContactFormCest
 {
     public function _before(\FunctionalTester $I)
     {
@@ -9,7 +9,7 @@ class ContactFormCest
 
     public function openContactPage(\FunctionalTester $I)
     {
-        $I->see('Contact', 'h1');        
+        $I->see('Contact', 'h1');
     }
 
 //    public function submitEmptyForm(\FunctionalTester $I)
