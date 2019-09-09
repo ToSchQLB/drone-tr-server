@@ -1,5 +1,7 @@
 # phpstorm project files
-.idea
+.idea/*
+!.idea/codeStyles
+
 
 # netbeans project files
 nbproject
@@ -31,3 +33,15 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+import/
+pd/
+web/pd/.gitignore
+web/pd/5d66681508f125d66681508f14/10/
+web/pd/5d66681508f125d66681508f14/2/.gitignore
+web/pd/5d66681508f125d66681508f14/3/
+web/pd/5d66681508f125d66681508f14/4/
+web/pd/5d66681508f125d66681508f14/5/
+web/pd/5d66681508f125d66681508f14/6/
+web/pd/5d66681508f125d66681508f14/7/
+web/pd/5d66681508f125d66681508f14/8/
+web/pd/5d66681508f125d66681508f14/9/
