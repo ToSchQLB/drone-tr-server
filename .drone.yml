@@ -61,6 +61,7 @@ steps:
       PLUGIN_HOSTNAME:
         from_secret: ftp_host
       PLUGIN_SRC_DIR: '/web/assets/'
+      PLUGIN_DEST_DIR: '/assets/'
     when:
       status:
         - success
