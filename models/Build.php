@@ -73,7 +73,7 @@ class Build extends \yii\db\ActiveRecord
         return '.'
             . DIRECTORY_SEPARATOR . 'pd'
             . DIRECTORY_SEPARATOR . $this->project->token
-            . DIRECTORY_SEPARATOR . $this->id;
+            . DIRECTORY_SEPARATOR . $this->build_no;
     }
 
     public function afterSave($insert, $changedAttributes)
