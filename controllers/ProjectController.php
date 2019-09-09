@@ -148,6 +148,14 @@ class ProjectController extends Controller
             $build->buildFolder
         );
 
+        $files = FileHelper::findFiles($build->buildFolder, ['only' => ['*.html']]);
+        foreach ($files as $file) {
+            $data = file_get_contents($file);
+            file_put_contents($file, str_replace('/assets/', './assets/', $data));
+        }
+
+
+
         $data = simplexml_load_file($build->buildFolder . DIRECTORY_SEPARATOR . 'report.xml');
         echo '<pre>';
 
