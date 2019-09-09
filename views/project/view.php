@@ -47,14 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'    => 'raw',
                 'value'     => function ($model) {
                     /** @var \app\models\Build $model */
-                    return Html::a($model->build_no,['build/view', 'id' => $model->id], ['target' => '_blank']);
+                    return Html::a($model->build_no, ['build/view', 'id' => $model->id], ['target' => '_blank']);
                 },
             ],
             'date:date',
             [
                 'attribute' => 'success',
+                'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model->success == 1 ? 'yes' : 'no';
+                    return $model->success == 1 ?
+                        Html::tag('span', 'yes', ['class' => 'label label-success']) :
+                        Html::tag('span', 'no', ['class' => 'label label-danger']);
                 },
             ],
         ],
