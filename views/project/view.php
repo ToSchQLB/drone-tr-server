@@ -40,7 +40,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2><?= Yii::t('project', 'last builds') ?></h2>
 
     <?= GridView::widget([
-        'dataProvider' => new ArrayDataProvider(['allModels' => $model->builds]),
+        'dataProvider' => new ArrayDataProvider([
+            'allModels' => $model->builds,
+            'sort'      => [
+                'attributes'   => ['build_no', 'date', 'success'],
+                'defaultOrder' => ['build_no' => SORT_DESC],
+            ],
+        ]),
         'columns'      => [
             [
                 'attribute' => 'build_no',
