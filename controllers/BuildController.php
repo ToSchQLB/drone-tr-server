@@ -16,6 +16,15 @@ class BuildController extends Controller
             echo 'nicht gefunden';
         }
 
+        return $this->render('view', ['build' => $build]);
+    }
+
+    public function actionViewReport($id){
+        $build = Build::findOne($id);
+        if (is_null($build)) {
+            echo 'nicht gefunden';
+        }
+
         $report = file_get_contents($build->buildFolder . DIRECTORY_SEPARATOR . 'report.html');
         $report = str_replace("img src='", "img src='" . $build->buildFolder . DIRECTORY_SEPARATOR, $report);
         $report = str_replace("href='", "href='" . $build->buildFolder . DIRECTORY_SEPARATOR, $report);
