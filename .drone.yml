@@ -36,16 +36,32 @@ steps:
     commands:
       - vendor/bin/codecept run --xml --html --json
 
+#  - name: upload-result
+#    image: cschlosser/drone-ftps
+#    environment:
+#      FTP_USERNAME:
+#        from_secret: ftp_username
+#      FTP_PASSWORD:
+#        from_secret: ftp_passwort
+#      PLUGIN_HOSTNAME:
+#        from_secret: ftp_host
+#      PLUGIN_SRC_DIR: '/tests/_output/'
+#    when:
+#      status:
+#        - success
+#        - failure
+
   - name: upload-result
-    image: cschlosser/drone-ftps
+    image: appleboy/drone-scp
     environment:
-      FTP_USERNAME:
+      user:
         from_secret: ftp_username
-      FTP_PASSWORD:
+      password:
         from_secret: ftp_passwort
-      PLUGIN_HOSTNAME:
+      host:
         from_secret: ftp_host
-      PLUGIN_SRC_DIR: '/tests/_output/'
+      source: '/tests/_output/'
+      target: '/var/www/dronetr.julius-kuehn.de/web/import/5da59d00bc5715da59d00bc572'
     when:
       status:
         - success

@@ -5,10 +5,27 @@ namespace app\controllers;
 
 
 use app\models\Build;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class BuildController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ]
+
+            ]
+        ];
+    }
+
     public function actionView($id)
     {
         $build = Build::findOne($id);

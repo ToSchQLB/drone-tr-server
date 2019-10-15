@@ -5,6 +5,7 @@ $db     = require __DIR__ . '/db.php';
 
 $config = [
     'id'             => 'basic',
+    'name'          => 'Drone Test Results',
     'basePath'       => dirname(__DIR__),
     'bootstrap'      => ['log'],
     'aliases'        => [
@@ -13,6 +14,7 @@ $config = [
     ],
     'language'       => 'de-DE',
     'sourceLanguage' => 'en-US',
+    'defaultRoute'   => 'project',
     'components'     => [
         'i18n'         => [
             'translations' => [

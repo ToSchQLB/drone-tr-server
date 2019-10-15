@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\Project;
 use app\models\ProjectSearch;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\AccessRule;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -27,6 +29,16 @@ class ProjectController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ]
+
+            ]
         ];
     }
 
@@ -144,7 +156,20 @@ class ProjectController extends Controller
         }
         $build = $project->createNewBuild();
         FileHelper::copyDirectory(
-            '.' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . $project->token,
+            '.' . DIRECTORY_SEPARATOR . 'import'
+            . DIRECTORY_SEPARATOR . $project->token
+            . DIRECTORY_SEPARATOR . 'drone'
+            . DIRECTORY_SEPARATOR . 'src'
+            . DIRECTORY_SEPARATOR . 'tests'
+            . DIRECTORY_SEPARATOR . '_output',
+            $build->buildFolder
+        );
+        FileHelper::copyDirectory(
+            '.' . DIRECTORY_SEPARATOR . 'import'
+            . DIRECTORY_SEPARATOR . $project->token
+            . DIRECTORY_SEPARATOR . 'drone'
+            . DIRECTORY_SEPARATOR . 'src'
+            . DIRECTORY_SEPARATOR . 'web',
             $build->buildFolder
         );
 
