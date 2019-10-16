@@ -79,12 +79,12 @@ class Project extends \yii\db\ActiveRecord
         return parent::beforeDelete();
     }
 
-    public function createNewBuild()
+    public function createNewBuild($buildNummer=null)
     {
         $build             = new Build();
         $build->project_id = $this->id;
         $build->date       = new Expression('now()');
-        $build->build_no   = $this->build_cnt + 1;
+        $build->build_no   = is_null($buildNummer) ? $this->build_cnt : $buildNummer ;
         $build->save(false);
 
         $this->build_cnt = $build->build_no;

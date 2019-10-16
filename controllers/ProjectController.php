@@ -31,6 +31,7 @@ class ProjectController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
+                'except' => ['process-build'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -148,13 +149,16 @@ class ProjectController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionProcessBuild($token)
+    public function actionProcessBuild($token,$build=null)
     {
         $project = Project::findOne(['token' => $token]);
         if (is_null($project)) {
             throw new NotFoundHttpException();
         }
-        $build = $project->createNewBuild();
+        if(!is_null($build)){
+            $build = intval($build);
+        }
+        $build = $project->createNewBuild($build);
         FileHelper::copyDirectory(
             '.' . DIRECTORY_SEPARATOR . 'import'
             . DIRECTORY_SEPARATOR . $project->token

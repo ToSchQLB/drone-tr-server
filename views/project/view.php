@@ -57,6 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'date:date',
+            'assertion',
+            'negativ',
             [
                 'attribute' => 'success',
                 'format'    => 'raw',
