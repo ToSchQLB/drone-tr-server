@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Project;
 use app\models\ProjectSearch;
+use Hoa\File\File;
+use Hoa\Iterator\Test\Unit\Limit;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\AccessRule;
@@ -161,20 +163,22 @@ class ProjectController extends Controller
         $build = $project->createNewBuild($build);
         FileHelper::copyDirectory(
             '.' . DIRECTORY_SEPARATOR . 'import'
-            . DIRECTORY_SEPARATOR . $project->token
-            . DIRECTORY_SEPARATOR . 'drone'
-            . DIRECTORY_SEPARATOR . 'src'
-            . DIRECTORY_SEPARATOR . 'tests'
-            . DIRECTORY_SEPARATOR . '_output',
+            . DIRECTORY_SEPARATOR . $project->token,
             $build->buildFolder
         );
-        FileHelper::copyDirectory(
-            '.' . DIRECTORY_SEPARATOR . 'import'
-            . DIRECTORY_SEPARATOR . $project->token
-            . DIRECTORY_SEPARATOR . 'drone'
-            . DIRECTORY_SEPARATOR . 'src'
-            . DIRECTORY_SEPARATOR . 'web',
-            $build->buildFolder
+//        FileHelper::copyDirectory(
+//            '.' . DIRECTORY_SEPARATOR . 'import'
+//            . DIRECTORY_SEPARATOR . $project->token
+//            . DIRECTORY_SEPARATOR . 'drone'
+//            . DIRECTORY_SEPARATOR . 'src'
+//            . DIRECTORY_SEPARATOR . 'web',
+//            $build->buildFolder
+//        );
+
+        FileHelper::removeDirectory('.' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . $project->token);
+        FileHelper::createDirectory(
+            '.' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . $project->token,
+            777
         );
 
         $files = FileHelper::findFiles($build->buildFolder, ['only' => ['*.html']]);

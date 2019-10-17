@@ -84,7 +84,7 @@ class Project extends \yii\db\ActiveRecord
         $build             = new Build();
         $build->project_id = $this->id;
         $build->date       = new Expression('now()');
-        $build->build_no   = is_null($buildNummer) ? $this->build_cnt : $buildNummer ;
+        $build->build_no   = is_null($buildNummer) ? $this->build_cnt + 1 : $buildNummer ;
         $build->save(false);
 
         $this->build_cnt = $build->build_no;
