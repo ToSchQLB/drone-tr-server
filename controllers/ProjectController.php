@@ -178,7 +178,7 @@ class ProjectController extends Controller
         FileHelper::removeDirectory('.' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . $project->token);
         FileHelper::createDirectory(
             '.' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . $project->token,
-            777
+            0777
         );
 
         $files = FileHelper::findFiles($build->buildFolder, ['only' => ['*.html']]);
